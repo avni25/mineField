@@ -68,7 +68,8 @@ function generateBombs(amount){
       } 
     }
     while(bs.length < amount);
-    
+   
+    console.log("tiles of bombs");
     console.log(bs.sort((a,b)=> a-b));
     return bs;
 }
@@ -128,12 +129,11 @@ canvas.addEventListener("click", event => {
     const tileNum = tileX + canvas.width / tileSize * tileY;
     //status.innerText += "\n \t tile num:" +tileNum;
     if(hh > 0){      
-        if(bombs.includes(tileNum)){
-            console.log("boom!!!");
+        if(bombs.includes(tileNum)){            
             ctx.fillStyle ="red"; 
             ctx.fillRect(xx, yy, tileSize, tileSize);
             hh--;
-            
+            console.log(`Boom!!! \nscore: ${score}`);
         }else{ 
           if(vals[tileNum] == 0){
             ctx.fillStyle = "blue";
