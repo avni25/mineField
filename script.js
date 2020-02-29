@@ -10,7 +10,7 @@ const status = document.createElement("pre");
 
 let lastTile = -1;
 
-var bombs = generateBombs(size); 
+var bombs = [];
 var score =0;
 var health=1;
 var hh = health;
@@ -58,14 +58,19 @@ function createArray(size){
 }
  
 function generateBombs(amount){
-    var bombs =[];
-    for (let i = 0; i < amount; i++) {
-        var r = Math.floor(Math.random()*(size * size)); 
-        
-        if(!bombs.includes(r)) bombs.push(r);               
+    var bs =[];
+    var i =0;
+    
+    do{
+      var r = Math.floor(Math.random()*(size * size));         
+      if(!bs.includes(r)){
+        bs.push(r);                      
+      } 
     }
-    console.log(bombs.sort((a,b)=> a-b));
-    return bombs;
+    while(bs.length < amount);
+    
+    console.log(bs.sort((a,b)=> a-b));
+    return bs;
 }
   
   drawGrid(canvas, ctx, tileSize);
@@ -164,17 +169,21 @@ btn_newgame.addEventListener("click", ()=>{
      
     size =  parseInt(canvas_size.options[canvas_size.selectedIndex].textContent);
     var b = parseInt(bomb_amount.value);
-    if(b > (size*size) || b <= 0 || typeof(b) != "number"){
+      
+    if(b > (size*size) || b <= 0 || isNaN(b)){
         b = size;
     }
+    
+    
     console.log(b+ ": "+ size*size+": "+size);
+    console.log(isNaN(b));
     document.body.removeChild(canvas);
     document.body.appendChild(canvas);
     document.body.removeChild(status);
     document.body.appendChild(status);
      
     drawGrid(canvas, ctx, tileSize);    
-    bombs = generateBombs(size);
+    bombs = generateBombs(b);
     
     bomb_amount.value = "";
     
