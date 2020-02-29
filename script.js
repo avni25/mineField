@@ -68,7 +68,7 @@ function generateBombs(amount){
       } 
     }
     while(bs.length < amount);
-   
+    
     console.log("tiles of bombs");
     console.log(bs.sort((a,b)=> a-b));
     return bs;
@@ -97,7 +97,7 @@ function select_value(){
 
   //-------------------------------EventListeners------------------------------------------------
 canvas.addEventListener("mousemove", evt => {
-    if(hh > 0){
+    if(hh > 0 && isNaN(bombs)){
         event.target.style.cursor = "pointer";
     }else{
         event.target.style.cursor= "default";
@@ -128,8 +128,9 @@ canvas.addEventListener("click", event => {
     const yy = tileY* tileSize;
     const tileNum = tileX + canvas.width / tileSize * tileY;
     //status.innerText += "\n \t tile num:" +tileNum;
-    if(hh > 0){      
-        if(bombs.includes(tileNum)){            
+    if(hh > 0 && isNaN(bombs)){      
+        if(bombs.includes(tileNum)){
+            
             ctx.fillStyle ="red"; 
             ctx.fillRect(xx, yy, tileSize, tileSize);
             hh--;
@@ -174,11 +175,9 @@ btn_newgame.addEventListener("click", ()=>{
         b = size;
     }
     
-    
-    //console.log(b+ ": "+ size*size+": "+size);
-    //console.log(isNaN(b));
-    
-   document.body.removeChild(canvas);
+    // console.log(b+ ": "+ size*size+": "+size);
+    // console.log(isNaN(b));
+    document.body.removeChild(canvas);
     document.body.appendChild(canvas);
     document.body.removeChild(status);
     document.body.appendChild(status);
