@@ -7,6 +7,8 @@ const ctx = canvas.getContext("2d");
 ctx.font = "11px courier";
 ctx.textBaseline = "top";
 const status = document.createElement("pre");
+const result_label  =document.createElement("label");
+
 let lastTile = -1;
 
 var bombs = generateBombs(size); 
@@ -18,27 +20,36 @@ var canvas_size = document.getElementById("canvas_size");
 var bomb_amount = document.getElementById("bomb_amount");
 
 const drawGrid = (canvas, ctx, tileSize, highlightNum) => {
+   // fill in squares
     for (let y = 0; y < canvas.width / tileSize; y++) {
       for (let x = 0; x < canvas.height / tileSize; x++) {
         const parity = (x + y) % 2;
         const tileNum = x + canvas.width / tileSize * y;
         const xx = x * tileSize;
-        const yy = y * tileSize;
-  
-        if (tileNum === highlightNum) {
-          ctx.fillStyle = "#f0f";
-        }
-        else {
-          ctx.fillStyle = parity ? "#668099" : "#ddd";
-        }
-        
+        const yy = y * tileSize;  
+       
+        ctx.fillStyle = "#ddd";
         ctx.fillRect(xx, yy, tileSize, tileSize);
-        ctx.fillStyle = parity ? "#fff" : "yellow";
-        //ctx.fillText(tileNum, xx, yy);
+        
+        
       }
     }
-};
+    //draw lines
+    for(var i = .5; i < canvas.width || i < canvas.height; i += tileSize) {
+      // draw horizontal lines
+      ctx.moveTo( i, 0 );
+      ctx.lineTo( i, canvas.height);
+      // draw vertical lines
+      ctx.moveTo( 0, i );
+      ctx.lineTo( canvas.width, i);
+  }
+  ctx.strokeStyle = 'hsla(0, 0%, 40%, .5)';
+  ctx.stroke();
+}
+
+
  
+
 
 function generateBombs(amount){
     var bombs =[];
@@ -58,14 +69,16 @@ function generateBombs(amount){
   document.body.appendChild(canvas);
   document.body.appendChild(status);
   
-  function select_value(){
+function select_value(){
     size = parseInt(canvas_size.options[canvas_size.selectedIndex].textContent);
     canvas.width = canvas.height = size *40;
     tileSize = canvas.width / size;
     
     console.log(size);
-  }
+}
   
+
+
   //-------------------------------EventListeners------------------------------------------------
 canvas.addEventListener("mousemove", evt => {
     if(hh > 0){
@@ -111,7 +124,11 @@ canvas.addEventListener("click", event => {
             score++;
         } 
     }
-    
+    // what happens when it's over???
+    if(hh <= 0){
+      result_label.textContent = `Game over! \nscore: ${score}`;
+      //document.body.appendChild(result_label);
+    }
 });
   
 canvas.addEventListener("mouseout", event => {
