@@ -175,9 +175,10 @@ btn_newgame.addEventListener("click", ()=>{
     }
     
     
-    console.log(b+ ": "+ size*size+": "+size);
-    console.log(isNaN(b));
-    document.body.removeChild(canvas);
+    //console.log(b+ ": "+ size*size+": "+size);
+    //console.log(isNaN(b));
+    
+   document.body.removeChild(canvas);
     document.body.appendChild(canvas);
     document.body.removeChild(status);
     document.body.appendChild(status);
