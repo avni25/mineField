@@ -7,7 +7,6 @@ const ctx = canvas.getContext("2d");
 ctx.font = "11px courier";
 ctx.textBaseline = "top";
 const status = document.createElement("pre");
-const result_label  =document.createElement("label");
 
 let lastTile = -1;
 
@@ -15,6 +14,7 @@ var bombs = generateBombs(size);
 var score =0;
 var health=1;
 var hh = health;
+var vals=[];
 var btn_newgame = document.getElementById("btn_newgame");
 var canvas_size = document.getElementById("canvas_size");
 var bomb_amount = document.getElementById("bomb_amount");
@@ -45,12 +45,18 @@ const drawGrid = (canvas, ctx, tileSize, highlightNum) => {
   }
   ctx.strokeStyle = 'hsla(0, 0%, 40%, .5)';
   ctx.stroke();
+  vals = createArray(size);
+  
 }
 
-
+function createArray(size){
+  var res = [];
+  for (let i = 0; i < size * size; i++) {
+      res.push(0);        
+  }
+  return res;
+}
  
-
-
 function generateBombs(amount){
     var bombs =[];
     for (let i = 0; i < amount; i++) {
@@ -68,13 +74,17 @@ function generateBombs(amount){
   document.body.style.alignItems = "flex-start";
   document.body.appendChild(canvas);
   document.body.appendChild(status);
-  
+   
+
 function select_value(){
     size = parseInt(canvas_size.options[canvas_size.selectedIndex].textContent);
     canvas.width = canvas.height = size *40;
     tileSize = canvas.width / size;
-    
-    console.log(size);
+    drawGrid(canvas, ctx, tileSize);
+    bombs = generateBombs(size);
+    vals = createArray(size);
+    score = 0;
+    health = 1;
 }
   
 
@@ -112,23 +122,32 @@ canvas.addEventListener("click", event => {
     const yy = tileY* tileSize;
     const tileNum = tileX + canvas.width / tileSize * tileY;
     //status.innerText += "\n \t tile num:" +tileNum;
-    if(hh > 0){
+    if(hh > 0){      
         if(bombs.includes(tileNum)){
             console.log("boom!!!");
             ctx.fillStyle ="red"; 
             ctx.fillRect(xx, yy, tileSize, tileSize);
             hh--;
-        }else{
-            ctx.fillStyle ="blue";
+            
+        }else{ 
+          if(vals[tileNum] == 0){
+            ctx.fillStyle = "blue";
             ctx.fillRect(xx, yy, tileSize, tileSize);
-            score++;
-        } 
+            score++;        
+            vals[tileNum] = 1;
+            
+          }        
+            
+        }
+    status.innerText = `    mouse coords: {${event.offsetX}, ${event.offsetX}}
+    tile coords : {${tileX}, ${tileY}}
+    tile number : ${tileNum}
+    score       : ${score}
+    health      : ${hh}`;
+         
     }
     // what happens when it's over???
-    if(hh <= 0){
-      result_label.textContent = `Game over! \nscore: ${score}`;
-      //document.body.appendChild(result_label);
-    }
+    
 });
   
 canvas.addEventListener("mouseout", event => {
@@ -142,6 +161,7 @@ btn_newgame.addEventListener("click", ()=>{
     hh = health;
     delete canvas;
     delete status;
+     
     size =  parseInt(canvas_size.options[canvas_size.selectedIndex].textContent);
     var b = parseInt(bomb_amount.value);
     if(b > (size*size) || b <= 0 || typeof(b) != "number"){
@@ -152,6 +172,7 @@ btn_newgame.addEventListener("click", ()=>{
     document.body.appendChild(canvas);
     document.body.removeChild(status);
     document.body.appendChild(status);
+     
     drawGrid(canvas, ctx, tileSize);    
     bombs = generateBombs(size);
     
