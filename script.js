@@ -113,7 +113,7 @@ canvas.addEventListener("mousemove", evt => {
       //drawGrid(canvas, ctx, tileSize, tileNum);
     }
     
-    status.innerText = `    mouse coords: {${evt.offsetX}, ${evt.offsetX}}
+    status.innerText = `    mouse coords: {${evt.offsetX}, ${evt.offsetY}}
     tile coords : {${tileX}, ${tileY}}
     tile number : ${tileNum}
     score       : ${score}
@@ -145,7 +145,7 @@ canvas.addEventListener("click", event => {
           }        
             
         }
-    status.innerText = `    mouse coords: {${event.offsetX}, ${event.offsetX}}
+    status.innerText = `    mouse coords: {${event.offsetX}, ${event.offsetY}}
     tile coords : {${tileX}, ${tileY}}
     tile number : ${tileNum}
     score       : ${score}
