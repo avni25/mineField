@@ -74,13 +74,13 @@ function generateBombs(amount){
     return bs;
 }
   
-  drawGrid(canvas, ctx, tileSize);
-  
-  document.body.style.display = "flex";
-  document.body.style.alignItems = "flex-start";
+   drawGrid(canvas, ctx, tileSize);  
+   document.body.style.display = "flex";
+   document.body.style.alignItems = "flex-start";
   document.body.appendChild(canvas);
   document.body.appendChild(status);
-   
+  status.style.cssText = "color: black; font-size: 32px; margin-left: 20px; margin-top: 10px;"; 
+  status.innerText = `score : ${score}`;
 
 function select_value(){
     size = parseInt(canvas_size.options[canvas_size.selectedIndex].textContent);
@@ -113,11 +113,7 @@ canvas.addEventListener("mousemove", evt => {
       //drawGrid(canvas, ctx, tileSize, tileNum);
     }
     
-    status.innerText = `    mouse coords: {${evt.offsetX}, ${evt.offsetY}}
-    tile coords : {${tileX}, ${tileY}}
-    tile number : ${tileNum}
-    score       : ${score}
-    health      : ${hh}`;
+    status.innerText = `score : ${score}`;
 });
   
 canvas.addEventListener("click", event => {
@@ -145,11 +141,7 @@ canvas.addEventListener("click", event => {
           }        
             
         }
-    status.innerText = `    mouse coords: {${event.offsetX}, ${event.offsetY}}
-    tile coords : {${tileX}, ${tileY}}
-    tile number : ${tileNum}
-    score       : ${score}
-    health      : ${hh}`;
+        status.innerText = `score : ${score}`;
          
     }
     // what happens when it's over???
@@ -175,8 +167,7 @@ btn_newgame.addEventListener("click", ()=>{
         b = size;
     }
     
-    // console.log(b+ ": "+ size*size+": "+size);
-    // console.log(isNaN(b));
+   
     document.body.removeChild(canvas);
     document.body.appendChild(canvas);
     document.body.removeChild(status);
@@ -186,7 +177,7 @@ btn_newgame.addEventListener("click", ()=>{
     bombs = generateBombs(b);
     
     bomb_amount.value = "";
-    
+    status.innerText = `score : ${score}`;
 });
 
 
